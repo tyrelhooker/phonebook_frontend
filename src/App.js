@@ -18,8 +18,6 @@ const clearInputValues = (nameInput, numberInput) => {
   nameInput.current.value = '';
   numberInput.current.value='';
   nameInput.current.focus();
-  
-  
 }
 
 // TODO: Change the messages so that successful messages have green border and error messages have red borders. 
@@ -28,9 +26,7 @@ const App = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [message, setMessage] = useState(null);
   
-
   useEffect(() => {
-    
     personsService
       .getAll()
       .then(initialPersons => setPersons(initialPersons))
@@ -40,12 +36,10 @@ const App = () => {
           setMessage(null)
         }, 5000)
       })
-      
   }, [searchResult]);
 
 
   const handleAddPerson = (nameInput, phoneNumInput, entirePhoneNumInput, entireNameInput) => {
-
     const addPerson = () => {
       const newPersons =  
         {
@@ -60,16 +54,12 @@ const App = () => {
           setPersons(persons.concat(returnedPersons))
         })
       
-      
-
-      
       clearInputValues(entireNameInput, entirePhoneNumInput)
       setMessage(`${newPersons.name} was added to phonebook`)
+
       setTimeout(() => {
-        
         setMessage(null)
-      }, 5000)
-      
+      }, 5000) 
     }
 
     let foundPerson = persons.find(person => person.name.toLowerCase() === nameInput.toLowerCase());
@@ -77,8 +67,6 @@ const App = () => {
     foundPerson 
       ? handleUpdate(foundPerson, entirePhoneNumInput, entireNameInput)
       : addPerson();
-    
-      
   }
 
 
@@ -88,10 +76,8 @@ const App = () => {
     const changePhoneNum = window.confirm(`${name} already exists. Would you like to change their phone number in the phonebook?`)
 
     if (changePhoneNum) {
-
       phoneNumInput.current.focus();
       const newPhoneNumber = phoneNumInput.current.value;
-    
       const person = persons.find(n => n.id === id);
       const changedPhoneNum = { ...person, number: newPhoneNumber}
 
@@ -116,8 +102,6 @@ const App = () => {
 
 
   const handleSearch = (searchInput) => {
-    // let foundPersons = [];
-
     const addSearchResult = (result) => {
       const foundPersons = result();
       setSearchResult(foundPersons);      
@@ -129,7 +113,6 @@ const App = () => {
         return persons.filter(person => person.name.toUpperCase().includes(searchInput));
       }
 
-      
     const noPersonsFound = () => {
       return console.log('No person found');
     }
@@ -166,22 +149,16 @@ const App = () => {
 
 
   return (
-    <div className="App">
-      
+    <div className="App">   
       <h2>Phonebook</h2>
-
-      
-
       <h3>Name Search</h3>
       <Filter handleSearch={handleSearch} searchResult={searchResult} />
-
       <h3>Add Person to Phonebook</h3>
       <PersonForm handleAddPerson={handleAddPerson}/>
       <Notification message={message} />
       <h3>Results</h3>
       <Person searchResult={searchResult} handleRemoval={handleRemoval} />
-      
-      </div>
+    </div>
   );
 }
 
